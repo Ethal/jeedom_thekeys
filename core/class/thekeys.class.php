@@ -90,7 +90,7 @@ class thekeys extends eqLogic {
         $thekeys->batteryStatus($device['battery']/40);
         $code = $key[$idgateway][$thekeys->getConfiguration('id')]['code'];
         $output = $this->callGateway('locker_status',$thekeys->getConfiguration('id_serrure'),$code);
-        $status = ($output== 'Door closed') ? 1 : 0;
+        $status = ($output['status']== 'Door closed') ? 1 : 0;
         $thekeys->checkAndUpdateCmd('status',$status);
         log::add('thekeys', 'debug', 'Rafraichissement serrure : ' . $device['identifier'] . ' ' . $device['battery'] . ' ' . $device['rssi']);
       }
