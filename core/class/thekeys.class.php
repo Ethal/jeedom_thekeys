@@ -90,8 +90,8 @@ class thekeys extends eqLogic {
         $thekeys->batteryStatus($device['battery']/40);
         $code = $key[$idgateway][$thekeys->getConfiguration('id')]['code'];
         $output = $this->callGateway('locker_status',$thekeys->getConfiguration('id_serrure'),$code);
-        /*$status = ($output==' 0x31') ? 0 : 1;
-        $thekeys->checkAndUpdateCmd('status',$status);*/
+        $status = ($output== 'Door closed') ? 1 : 0;
+        $thekeys->checkAndUpdateCmd('status',$status);
         log::add('thekeys', 'debug', 'Rafraichissement serrure : ' . $device['identifier'] . ' ' . $device['battery'] . ' ' . $device['rssi']);
       }
     }
@@ -469,11 +469,11 @@ class thekeysCmd extends cmd {
       $code = $key[$gatewayid][$eqLogic->getConfiguration('id')]['code'];
       if (is_object($gateway)) {
         $gateway->callGateway($this->getConfiguration('value'),$eqLogic->getConfiguration('id_serrure'),$code);
+        $gateway->scanLockers();
       } else {
         log::add('thekeys', 'debug', 'Gateway non existante : ' . $gatewayid);
       }
       log::add('thekeys', 'debug', 'Commande : ' . $this->getConfiguration('value') . ' ' . $eqLogic->getConfiguration('id_serrure') . ' ' . $code);
-      thekeys::updateUser();
       break;
       case 'gateway' :
       $eqLogic = $this->getEqLogic();
