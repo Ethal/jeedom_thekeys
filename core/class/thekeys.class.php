@@ -89,6 +89,7 @@ class thekeys extends eqLogic {
         $thekeys->checkAndUpdateCmd('battery',$device['battery']/1000);
         $thekeys->batteryStatus($device['battery']/40);
         $code = $key[$idgateway][$thekeys->getConfiguration('id')]['code'];
+        sleep(1);
         $output = $this->callGateway('locker_status',$thekeys->getConfiguration('id_serrure'),$code);
         $status = ($output['status']== 'Door closed') ? 1 : 0;
         $thekeys->checkAndUpdateCmd('status',$status);
@@ -469,6 +470,7 @@ class thekeysCmd extends cmd {
       $code = $key[$gatewayid][$eqLogic->getConfiguration('id')]['code'];
       if (is_object($gateway)) {
         $gateway->callGateway($this->getConfiguration('value'),$eqLogic->getConfiguration('id_serrure'),$code);
+        sleep(1);
         $gateway->scanLockers();
       } else {
         log::add('thekeys', 'debug', 'Gateway non existante : ' . $gatewayid);
