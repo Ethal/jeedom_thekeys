@@ -137,7 +137,7 @@ class thekeys extends eqLogic {
         $json = thekeys::callCloud($url);
         foreach ($json['data']['partages_accessoire'] as $share) {
           log::add('thekeys', 'debug', 'Partage serrure : ' . $share['accessoire']['id_accessoire'] . ' ' . $share['code']);
-          if (!(isset($share['date_debut']) || isset($share['date_fin']) || isset($share['heure_debut']) || isset($share['heure_fin'])) && $share['iddesc'] == 'jeedom') {
+          if (!(isset($share['date_debut']) || isset($share['date_fin']) || isset($share['heure_debut']) || isset($share['heure_fin']))) {
             //on vérifier que c'est un partage permanent, jeedom ne prend pas en compte les autres
             $accessoire[$share['accessoire']['id_accessoire']][$keyeq->getConfiguration('id')]['id'] = $share['id'];
             $accessoire[$share['accessoire']['id_accessoire']][$keyeq->getConfiguration('id')]['code'] = $share['code'];
@@ -194,7 +194,7 @@ class thekeys extends eqLogic {
         }
         foreach ($json['data']['partages_utilisateur'] as $share) {
           log::add('thekeys', 'debug', 'Partage serrure : ' . $share['utilisateur']['username']);
-          if (!(isset($share['date_debut']) || isset($share['date_fin']) || isset($share['heure_debut']) || isset($share['heure_fin'])) && $share['iddesc'] == 'jeedom') {
+          if (!(isset($share['date_debut']) || isset($share['date_fin']) || isset($share['heure_debut']) || isset($share['heure_fin']))) {
             //on vérifier que c'est un partage permanent, jeedom ne prend pas en compte les autres
             $phone[$share['utilisateur']['username']][$keyeq->getConfiguration('id')]['id'] = $share['id'];
             //$phone[$share['utilisateur']['username']][$keyeq->getConfiguration('id')]['code'] = $share['code'];
@@ -232,7 +232,7 @@ class thekeys extends eqLogic {
     thekeys::authCloud();
     if ($_phone) {
       $url = 'partage/create/' . $this->getConfiguration('id') . '/' . urlencode($_id);
-      $data = array('partage[description]' => 'jeedom', 'partage[nom]' => 'jeedom' . str_replace('+','',$_id), 'partage[iddesc]' => 'jeedom', 'partage[actif]' => 1);
+      $data = array('partage[description]' => 'jeedom', 'partage[nom]' => 'jeedom' . str_replace('+','',$_id), 'partage[actif]' => 1);
     } else {
       $url = 'partage/create/' . $this->getConfiguration('id') . '/accessoire/' . $_id;
       $data = array('partage_accessoire[description]' => 'jeedom', 'partage_accessoire[nom]' => 'jeedom' . str_replace('+','',$_id), 'partage_accessoire[actif]' => 1);
@@ -251,7 +251,7 @@ class thekeys extends eqLogic {
     thekeys::authCloud();
     if ($_phone) {
       $url = 'partage/update/' . urlencode($_id);
-      $data = array('partage[iddesc]' => 'jeedom', 'partage[nom]' => 'jeedom' . str_replace('+','',$_id));
+      $data = array('partage[nom]' => 'jeedom' . str_replace('+','',$_id));
       if ($_actif == 'enable') {
         $data['partage[actif]'] = 1;
       }
